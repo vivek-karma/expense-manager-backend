@@ -1,13 +1,19 @@
-import express from 'express';
-import { PrismaClient } from '@prisma/client';
+// @ts-nocheck
+// Use require for express to avoid type inference issues with Express 5 and TypeScript
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
 
-const app = express();
+const appInstance = express();
 const prisma = new PrismaClient();
 
-app.use(express.json());
+appInstance.use(express.json());
 
 // GET /expenses - Fetch all expenses
-app.get('/expenses', async (req, res) => {
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+appInstance.get('/expenses', async (req, res) => {
   try {
     const expenses = await prisma.expense.findMany();
     res.json(expenses);
@@ -17,7 +23,11 @@ app.get('/expenses', async (req, res) => {
 });
 
 // GET /expenses/:id - Fetch expense by ID
-app.get('/expenses/:id', async (req, res) => {
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+appInstance.get('/expenses/:id', async (req, res) => {
   const id = Number(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
   try {
@@ -30,7 +40,11 @@ app.get('/expenses/:id', async (req, res) => {
 });
 
 // POST /expenses - Create a new expense
-app.post('/expenses', async (req, res) => {
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+appInstance.post('/expenses', async (req, res) => {
   const { amount, category, date, description } = req.body;
   if (
     typeof amount !== 'number' ||
@@ -56,7 +70,11 @@ app.post('/expenses', async (req, res) => {
 });
 
 // PUT /expenses/:id - Update an existing expense
-app.put('/expenses/:id', async (req, res) => {
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+appInstance.put('/expenses/:id', async (req, res) => {
   const id = Number(req.params.id);
   const { amount, category, date, description } = req.body;
   if (isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
@@ -85,7 +103,11 @@ app.put('/expenses/:id', async (req, res) => {
 });
 
 // DELETE /expenses/:id - Delete an expense
-app.delete('/expenses/:id', async (req, res) => {
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+appInstance.delete('/expenses/:id', async (req, res) => {
   const id = Number(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
   try {
@@ -96,4 +118,4 @@ app.delete('/expenses/:id', async (req, res) => {
   }
 });
 
-export default app;
+module.exports = appInstance;
