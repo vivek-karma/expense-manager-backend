@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:11
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 22Feb@2023
+      MYSQL_DATABASE: expenses-db
+      MYSQL_USER: karma
+      MYSQL_PASSWORD: 22Feb@2023
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  backend:
+    build: .
+    depends_on:
+      - mariadb
+    environment:
+      DATABASE_URL: "mysql://root:22Feb@2023@mariadb:3306/expenses-db"
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "npm run prisma:migrate && npm run prisma:generate && npm run build && npm start"
+    restart: always
+
+volumes:
+  mariadb_data:
