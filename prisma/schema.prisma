@@ -1,0 +1,19 @@
+// Prisma schema for Expense Manager
+// MariaDB database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  amount      Float
+  category    String
+  date        DateTime
+  description String
+}

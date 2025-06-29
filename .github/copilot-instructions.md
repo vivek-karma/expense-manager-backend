@@ -6,10 +6,10 @@ This backend application provides a lightweight and fast RESTful API for the Exp
 
 ## Technology Stack
 
-- **Language:** Node.js (JavaScript/TypeScript) or Python (FastAPI)
-- **Framework:** Express.js (Node.js) or FastAPI (Python)
-- **Database:** SQLite or PostgreSQL (lightweight and easy to set up)
-- **ORM:** Prisma (Node.js) or SQLAlchemy (Python)
+- **Language:** Node.js (TypeScript)
+- **Framework:** Express.js (Node.js)
+- **Database:** MariaDB (via Docker)
+- **ORM:** Prisma (Node.js)
 - **Authentication:** JWT (optional, for securing endpoints)
 
 ## Setup Instructions
@@ -25,13 +25,16 @@ This backend application provides a lightweight and fast RESTful API for the Exp
       ```
       npm install
       ```
-    - For Python (FastAPI):
-      ```
-      pip install -r requirements.txt
-      ```
-
+  
 3. **Configure Environment Variables**
-    - Create a `.env` file with database connection details.
+    - Create a `.env` file in the project root with the following content for MariaDB running in a Docker container:
+
+    ```
+    # .env
+    DATABASE_URL="mysql://user:password@mariadb:3306/expense_manager"
+    ```
+
+    - Ensure your `docker-compose.yml` includes a MariaDB service and the backend depends on it.
 
 4. **Database Migration**
     - Run migrations to set up the database schema.
@@ -40,10 +43,6 @@ This backend application provides a lightweight and fast RESTful API for the Exp
     - For Node.js:
       ```
       npm start
-      ```
-    - For Python:
-      ```
-      uvicorn main:app --reload
       ```
 
 ## API Endpoints
@@ -74,11 +73,11 @@ This backend application provides a lightweight and fast RESTful API for the Exp
 ## Testing
 
 - Write unit and integration tests for all endpoints.
-- Use tools like Jest (Node.js) or Pytest (Python).
+- Use tools like Jest (Node.js).
 
 ## Deployment
 
-- Use Docker for containerization (optional).
-- Deploy on lightweight cloud services (e.g., Heroku, Vercel, Render).
+- Use Docker for containerization
+- Deploy to raspberry pi running docker
 
 ---
